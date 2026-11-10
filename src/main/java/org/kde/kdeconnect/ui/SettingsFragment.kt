@@ -66,8 +66,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             trustedNetworkPref(context),
             devicesByIpPref(context),
             bluetoothSupportPref(context),
+            tailscalePref(context),
             exportLogsPref(context),
-            moreSettingsPref(context),
         ).forEach(screen::addPreference)
 
         preferenceScreen = screen
@@ -168,6 +168,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     val activityLauncherWithDevicesByIpRefresh = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         updateDevicesByIpSummary()
+        context?.let { BackgroundService.ForceRefreshConnections(it) }
     }
 
     private fun trustedNetworkPref(context: Context) = Preference(context).apply {
@@ -240,6 +241,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private fun tailscalePref(context: Context) = Preference(context).apply {
+        isPersistent = false
+        setTitle(R.string.tailscale_settings_title)
+        setSummary(R.string.tailscale_settings_summary)
+        onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            startActivity(Intent(context, TailscaleSettingsActivity::class.java))
+            true
+        }
+    }
     private fun exportLogsPref(context: Context) = Preference(context).apply {
         isPersistent = false
         setTitle(R.string.settings_export_logs)
