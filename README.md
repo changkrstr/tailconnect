@@ -19,7 +19,23 @@ This is a native Android port of the KDE Connect Qt app. You will find a more co
 
 ## How to install this app
 
-You can install this app from the [Play Store](https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp) as well as [F-Droid](https://f-droid.org/repository/browse/?fdid=org.kde.kdeconnect_tp). Note you will also need to install the [desktop app](https://invent.kde.org/network/kdeconnect-kde) for it to work.
+Download the latest APK from the [Releases page](https://github.com/changkrstr/tailconnect/releases). TailConnect uses its own package (`io.github.changkrstr.tailconnect`), so it can be installed alongside the official KDE Connect.
+
+After installing, open **Settings → Tailscale Tunnel**, paste a Tailscale auth key (`tskey-auth-…`), save, then add the tailnet IP of the peer under **Add device by IP**.
+
+## Releases and upstream tracking
+
+| Automation | Schedule | Behaviour |
+|---|---|---|
+| `sync-upstream.yml` | every 6 h | Rebases TailConnect onto `KDE/kdeconnect-android` `master`; when upstream publishes a new tag, pushes `tailconnect-<upstream tag>` and dispatches the release build. Aborts loudly (no tag, no release) if the rebase conflicts. |
+| `bump-tailscale.yml` | weekly | Refreshes the pinned `tailscale.com` version in `tsbridge/go/go.mod`. No release tag is created. |
+| `release.yml` | on `tailconnect-v*` tags | Builds `tsbridge.aar`, assembles the signed release APK, publishes a GitHub Release. |
+
+Manual sync:
+
+```bash
+git fetch upstream && git rebase upstream/master
+```
 
 ## Contributing
 
