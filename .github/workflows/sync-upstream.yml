@@ -1,0 +1,116 @@
+name: Sync & Release from Upstream KDE Connect
+
+on:
+  schedule:
+    # Check upstream KDE Connect every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_REPO: https://github.com/KDE/kdeconnect-android.git
+  RELEASE_TAG_PREFIX: tailconnect-
+
+jobs:
+  # 1. Rebase TailConnect commits onto the latest upstream KDE Connect master.
+  sync:
+    runs-on: ubuntu-latest
+    outputs:
+      upstream_tag: ${{ steps.upstream.outputs.tag }}
+      moved: ${{ steps.rebase.outputs.moved }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git and fetch upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream "$UPSTREAM_REPO" 2>/dev/null || git remote set-url upstream "$UPSTREAM_REPO"
+          git fetch upstream --tags --force --prune
+
+      - name: Detect latest upstream KDE Connect tag
+        id: upstream
+        run: |
+          TAG=$(git ls-remote --tags --refs --sort=-v:refname upstream 'v*' | head -n1 | sed 's#.*refs/tags/##')
+          if [ -z "$TAG" ]; then
+            echo "::error::Unable to detect upstream KDE Connect tag"
+            exit 1
+          fi
+          echo "Latest upstream KDE Connect tag: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Rebase onto upstream master
+        id: rebase
+        run: |
+          echo "moved=false" >> "$GITHUB_OUTPUT"
+          if git merge-base --is-ancestor upstream/master HEAD; then
+            echo "Already up to date with upstream/master"
+            exit 0
+          fi
+
+          if git rebase upstream/master; then
+            echo "Rebase onto upstream/master succeeded"
+            echo "moved=true" >> "$GITHUB_OUTPUT"
+          else
+            git rebase --abort
+            {
+              echo "::error::Rebase onto upstream/master failed with conflicts."
+              echo "### Manual sync required"
+              echo "TailConnect could not be rebased automatically onto upstream KDE Connect."
+              echo "Resolve locally with:"
+              echo '```'
+              echo "git fetch upstream && git rebase upstream/master"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: Push rebased branch
+        if: steps.rebase.outputs.moved == 'true'
+        run: git push --force-with-lease origin HEAD:master
+
+  # 2. Cut a TailConnect release tag when upstream KDE Connect publishes a new version.
+  tag-release:
+    needs: sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git and fetch latest refs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream "$UPSTREAM_REPO" 2>/dev/null || git remote set-url upstream "$UPSTREAM_REPO"
+          git fetch upstream --tags --force --prune
+          git fetch origin master --force
+          git checkout -B master origin/master
+
+      - name: Tag new upstream version
+        env:
+          UPSTREAM_TAG: ${{ needs.sync.outputs.upstream_tag }}
+        run: |
+          TAG="${RELEASE_TAG_PREFIX}${UPSTREAM_TAG}"
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "Release tag ${TAG} already exists, nothing to do."
+            echo "#### No new release: \`${TAG}\` already published" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git tag -a "$TAG" -m "TailConnect based on KDE Connect ${UPSTREAM_TAG}"
+          git push origin "refs/tags/${TAG}"
+          echo "Pushed ${TAG}, release build will start automatically."
+          echo "#### Queued release: \`${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
