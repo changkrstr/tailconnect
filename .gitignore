@@ -15,3 +15,4 @@ local.properties
 GPUCache/
 /release/
 /.kotlin/
+/.agents/session_log/

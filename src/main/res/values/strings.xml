@@ -13,7 +13,7 @@ SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted
         All translations for all KDE apps are handled by the [localization team](https://l10n.kde.org).
         We really appreciate your translations, but make sure to submit them by working with the proper team!
   -->
-    <string name="kde_connect">KDE Connect</string>
+    <string name="kde_connect">TailConnect</string>
     <string name="manifest_label_share">Send to Device</string>
     <string name="foreground_notification_no_devices">Not connected to any device</string>
     <string name="foreground_notification_devices">Connected to: %s</string>
@@ -675,4 +675,26 @@ SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted
     <string name="pref_mpris_volume_control_summary">Control the connected device\'s media volume using this phone\'s hardware buttons</string>
 
     <string name="pref_notification_screen_off_key" translatable="false">pref_notification_screen_off</string>
+    <!-- Tailscale -->
+    <string name="tailscale_settings_title">Tailscale Tunnel</string>
+    <string name="tailscale_settings_summary">Connect to devices over Tailscale / Headscale VPN tunnel</string>
+    <string name="tailscale_enable">Enable Tailscale</string>
+    <string name="tailscale_authkey_title">Tailscale Auth Key</string>
+    <string name="tailscale_authkey_hint">tskey-auth-...</string>
+    <string name="tailscale_control_url_title">Control Server URL (Optional)</string>
+    <string name="tailscale_control_url_hint">e.g. https://headscale.example.com</string>
+    <string name="tailscale_hostname_title">Device Hostname</string>
+    <string name="tailscale_status_title">Tunnel Status</string>
+    <string name="tailscale_status_stopped">Disconnected</string>
+    <string name="tailscale_status_connecting">Connecting…</string>
+    <string name="tailscale_status_online">Connected</string>
+    <string name="tailscale_status_error">Error</string>
+    <string name="tailscale_local_ip">Assigned Tailscale IP: %1$s</string>
+    <string name="tailscale_peer_ip_title">Connect to Tailnet Device</string>
+    <string name="tailscale_peer_ip_hint">IP (100.x.y.z) or Hostname</string>
+    <string name="tailscale_connect_button">Connect / Discover</string>
+    <string name="tailscale_peers_list_title">Saved Tailnet Devices</string>
+    <string name="tailscale_save_settings">Save &amp; Reconnect</string>
+    <string name="tailscale_disconnected_desc">Tailscale is currently turned off.</string>
+
 </resources>
