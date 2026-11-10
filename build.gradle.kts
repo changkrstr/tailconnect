@@ -38,8 +38,8 @@ android {
     namespace = "org.kde.kdeconnect_tp"
     compileSdk = 37
     defaultConfig {
-        applicationId = "org.kde.kdeconnect_tp"
-        minSdk = 23
+        applicationId = "io.github.changkrstr.tailconnect"
+        minSdk = 26
         targetSdk = 37
         versionCode = 13703
         versionName = "1.37.3"
@@ -325,6 +325,9 @@ dependencies {
     // For device controls
     implementation(libs.reactive.streams)
     implementation(libs.rxjava)
+
+    // Tailscale tsnet bridge
+    implementation(files("libs/tsbridge.aar"))
 }
 
 licenseReport {

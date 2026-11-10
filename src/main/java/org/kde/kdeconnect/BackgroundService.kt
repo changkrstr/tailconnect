@@ -31,6 +31,7 @@ import org.kde.kdeconnect.backends.BaseLinkProvider
 import org.kde.kdeconnect.backends.BaseLinkProvider.ConnectionReceiver
 import org.kde.kdeconnect.backends.bluetooth.BluetoothLinkProvider
 import org.kde.kdeconnect.backends.lan.LanLinkProvider
+import org.kde.kdeconnect.backends.tailscale.TailscaleLinkProvider
 import org.kde.kdeconnect.helpers.NotificationHelper
 import org.kde.kdeconnect.plugins.clipboard.ClipboardFloatingActivity
 import org.kde.kdeconnect.plugins.clipboard.ClipboardPlugin
@@ -71,6 +72,7 @@ class BackgroundService : Service() {
         linkProviders.add(LanLinkProvider(this))
         //linkProviders.add(org.kde.kdeconnect.backends.loopback.LoopbackLinkProvider(this))
         linkProviders.add(BluetoothLinkProvider(this))
+        linkProviders.add(TailscaleLinkProvider(this))
     }
 
     private fun onNetworkChange(network: Network?) {
