@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="kde_connect">KDE Connect</string>
+  <string name="kde_connect">TailConnect</string>
   <string name="manifest_label_share">发送到设备</string>
   <string name="foreground_notification_no_devices">未连接到任何设备</string>
   <string name="foreground_notification_devices">已连接到：%s</string>
@@ -479,4 +479,25 @@
   <string name="runcommand_clear_output">清除输出</string>
   <string name="pref_mpris_volume_control_title">硬件音量键</string>
   <string name="pref_mpris_volume_control_summary">使用此手机的硬件按钮控制已连接设备的媒体音量</string>
+  <!-- Tailscale -->
+  <string name="tailscale_settings_title">Tailscale 隧道</string>
+  <string name="tailscale_settings_summary">通过 Tailscale / Headscale VPN 隧道连接设备</string>
+  <string name="tailscale_enable">启用 Tailscale 隧道</string>
+  <string name="tailscale_authkey_title">Tailscale Auth Key (密钥)</string>
+  <string name="tailscale_authkey_hint">tskey-auth-...</string>
+  <string name="tailscale_control_url_title">控制服务器 URL (可选)</string>
+  <string name="tailscale_control_url_hint">例如 https://headscale.example.com，留空为官方</string>
+  <string name="tailscale_hostname_title">设备节点名称</string>
+  <string name="tailscale_status_title">隧道状态</string>
+  <string name="tailscale_status_stopped">未连接</string>
+  <string name="tailscale_status_connecting">正在连接…</string>
+  <string name="tailscale_status_online">已连接</string>
+  <string name="tailscale_status_error">连接错误</string>
+  <string name="tailscale_local_ip">分配的 Tailscale IP: %1$s</string>
+  <string name="tailscale_peer_ip_title">连接同一 Tailnet 设备</string>
+  <string name="tailscale_peer_ip_hint">输入目标设备 IP (100.x.y.z) 或主机名</string>
+  <string name="tailscale_connect_button">连接 / 发现设备</string>
+  <string name="tailscale_peers_list_title">已保存的 Tailnet 设备</string>
+  <string name="tailscale_save_settings">保存配置并重连</string>
+  <string name="tailscale_disconnected_desc">Tailscale 隧道当前处于关闭状态。</string>
 </resources>

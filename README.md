@@ -1,6 +1,8 @@
-# KDE Connect - Android app
+# TailConnect
 
-KDE Connect is a multi-platform app that allows your devices to communicate (eg: your phone and your computer).
+TailConnect is an enhanced fork of the **KDE Connect Android app** with embedded **Tailscale (`tsnet`)** userspace tunnel support.
+
+It enables secure, seamless device pairing and synchronization over a Tailnet (Tailscale / Headscale VPN) without requiring a system-wide VPN or root permissions, while retaining all standard KDE Connect local-network features.
 
 ## (Some) Features
 - **Shared clipboard**: copy and paste between your phone and your computer (or any other device).
@@ -31,7 +33,11 @@ It is a good idea to also subscribe to the [KDE Connect mailing list](https://ma
 
 Please know that all translations for all KDE apps are handled by the [localization team](https://l10n.kde.org/). If you would like to submit a translation, that should be done by working with the proper team for that language.
 
-## License
-[GNU GPL v2](https://www.gnu.org/licenses/gpl-2.0.html) and [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)
+## License and Acknowledgments
 
-If you are reading this from GitHub, you should know that this is just a mirror of the [KDE Project repo](https://invent.kde.org/network/kdeconnect-android/).
+- **TailConnect**: Licensed under [GNU GPL v2](https://www.gnu.org/licenses/gpl-2.0.html) and [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html).
+- **KDE Connect**: Original Android application copyright (c) Albert Vaca Cintora and KDE Connect contributors, licensed under GPL-2.0 / GPL-3.0.
+- **Tailscale (`tsnet`)**: Embedded Tailscale client library copyright (c) 2020 Tailscale Inc. & contributors, licensed under the BSD 3-Clause License (see `LICENSES/BSD-3-Clause.txt`).
+
+### Trademark Disclaimer
+TailConnect is an independent community open-source project. It is not affiliated with, endorsed by, or sponsored by KDE e.V. or Tailscale Inc. "KDE" and "KDE Connect" are trademarks of KDE e.V. "Tailscale" is a registered trademark of Tailscale Inc.
