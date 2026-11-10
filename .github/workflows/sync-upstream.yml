@@ -121,5 +121,3 @@ jobs:
 
           echo "Pushed ${TAG}, release build dispatched."
           echo "#### Queued release: \`${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
