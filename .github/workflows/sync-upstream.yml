@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: upstream-sync
@@ -102,6 +103,7 @@ jobs:
       - name: Tag new upstream version
         env:
           UPSTREAM_TAG: ${{ needs.sync.outputs.upstream_tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${RELEASE_TAG_PREFIX}${UPSTREAM_TAG}"
           if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
@@ -112,5 +114,12 @@ jobs:
 
           git tag -a "$TAG" -m "TailConnect based on KDE Connect ${UPSTREAM_TAG}"
           git push origin "refs/tags/${TAG}"
-          echo "Pushed ${TAG}, release build will start automatically."
+
+          # Tags pushed with GITHUB_TOKEN do not trigger other workflows,
+          # so dispatch the release build explicitly on the new tag.
+          gh workflow run release.yml --ref "$TAG" --repo "$GITHUB_REPOSITORY"
+
+          echo "Pushed ${TAG}, release build dispatched."
           echo "#### Queued release: \`${TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
